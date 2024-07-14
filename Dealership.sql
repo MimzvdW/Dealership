@@ -32,7 +32,7 @@ VALUES ('S2', 'Asian Car Masters', 'Japan', 'Yuki Tanaka', '555-5678', '002, 005
 INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Country, Supplier_Contact, Supplier_Phone_Number, Stock_Number) 
 VALUES ('S3', 'Electric Innovations', 'USA', 'Emily Johnson', '555-9101', '003');
 INSERT INTO Supplier (Supplier_ID, Supplier_Name, Supplier_Country, Supplier_Contact, Supplier_Phone_Number, Stock_Number) 
-VALUES ('S4', 'European Luxury', 'Germany', 'Hans Müller', '555-1122', '006, 007, 009');
+VALUES ('S4', 'European Luxury', 'Germany', 'Hans MÃ¼ller', '555-1122', '006, 007, 009');
 
 
 ---Insert into Product table
@@ -57,8 +57,7 @@ VALUES (009, 'Mercedes', 'C-Class', 2022, 'Grey', 0, 'Automatic', 600000, 'S4');
 INSERT INTO Product (Stock_Number, Product_Make, Product_Model, Product_Year, Product_Color, Product_Mileage, Product_Transmission, Product_Price, Supplier_ID) 
 VALUES (010, 'Subaru', 'Outback', 2020, 'Green', 25000, 'Manual', 270000, 'S1');
 
----Question 2 ***Subqueries***
----2.1
+--- ***Subqueries***
 ---Display Product price where country is USA
 SELECT product.Product_Price AS Price
 FROM Supplier supplier JOIN Product product ON product.Supplier_ID = supplier.Supplier_ID
@@ -69,7 +68,6 @@ SELECT product.Product_Price AS Price, supplier.Supplier_Country AS Country
 FROM Supplier supplier JOIN Product product ON product.Supplier_ID = supplier.Supplier_ID
 WHERE Supplier_Country ='USA';
 
----2.2
 ---Display Product make where supplier name is Electric Innovations 
 SELECT product.Product_Make AS Make
 FROM Supplier supplier JOIN Product product ON product.Supplier_ID = supplier.Supplier_ID
@@ -80,7 +78,6 @@ SELECT product.Product_Make AS Make, supplier.Supplier_Name AS Supplier_Name
 FROM Supplier supplier JOIN Product product ON product.Supplier_ID = supplier.Supplier_ID
 WHERE Supplier_Name ='Electric Innovations';
 
----2.3
 ---Display Supplier Contact where price is higher than 500 000
 SELECT supplier.supplier_contact AS Contact
 FROM Product product JOIN Supplier supplier ON supplier.Supplier_ID = product.Supplier_ID 
@@ -91,7 +88,6 @@ SELECT product.Product_Make AS Make, supplier.supplier_Name AS Name, supplier.su
 FROM Product product JOIN Supplier supplier ON supplier.Supplier_ID = product.Supplier_ID 
 WHERE Product_Price > 500000;
 
----2.4
 ---Display Supplier Phone Number where Mileage equals zero
 SELECT supplier.Supplier_Phone_Number AS Phone_Number
 FROM Product product JOIN Supplier supplier ON supplier.Supplier_ID = product.Supplier_ID 
@@ -102,21 +98,18 @@ SELECT product.Product_Make AS Make, supplier.supplier_Name AS Name, supplier.su
 FROM Product product JOIN Supplier supplier ON supplier.Supplier_ID = product.Supplier_ID 
 WHERE Product_Mileage = 0;
 
----Question 3 ***Schema Objects Views***
----3.1
+--- ***Schema Objects Views***
 ---Create a view that shows all the columns from the Product table
 CREATE VIEW Product_Table_View AS
 SELECT *
 FROM Product;
 
----3.2
 ---Create a view that shows all the cars with automatic transmission and their details
 CREATE VIEW Automatic_Cars AS
 SELECT Product_Make AS Make, Product_Model As Model, Product_Year AS Year, Product_Color AS Color, Product_Mileage AS Mileage, Product_Transmission AS Transmission, Product_Price AS Price
 FROM Product
 WHERE Product_Transmission = 'Automatic';
 
----3.3
 ---Create a view lists all cars supplied by "American Autos" with the supplier's details
 CREATE VIEW American_Autos_Cars_Details AS
 SELECT Supplier_Name AS Name, Supplier_Country AS Country, Supplier_Contact AS Contact, Supplier_Phone_Number AS Phone_Number
@@ -130,13 +123,11 @@ p.Product_Color AS Color, p.Product_Mileage AS Mileage, p.Product_Transmission A
 FROM Supplier s JOIN Product p ON s.Supplier_ID = p.Supplier_ID
 WHERE supplier_Name = 'American Autos';
 
----3.4
 ---Create a view that shows the Make, Model, Year and Supplier Name
 CREATE VIEW Car_Details_Supplier_Name AS
 SELECT p.Product_Make AS Make, p.Product_Model AS Model, p.Product_Year AS Year, s.supplier_Name
 FROM Supplier s JOIN Product p ON s.Supplier_ID = p.Supplier_ID;
 
----3.5
 ---Create a view that list all the 2022 cars and their supplier
 CREATE VIEW Cars_2022 AS
 SELECT p.Product_Year AS Year, s.Supplier_ID, Supplier_Name, s.Supplier_Country AS  Country, 
@@ -145,7 +136,7 @@ FROM Product p JOIN Supplier s ON p.Supplier_ID = s.Supplier_ID
 WHERE Product_Year = 2022;
 
 ---Question 4 ***Set Operators***
----4.1 List all unique in the Products Table and Supplier countries in a single column
+---List all unique in the Products Table and Supplier countries in a single column
 SELECT Product_Model FROM Product
 UNION ---Return unique rows
 SELECT Supplier_Country FROM Supplier;
@@ -154,7 +145,7 @@ SELECT Product_Model AS Model_and_Country FROM Product
 UNION
 SELECT Supplier_Country AS Model_and_Country FROM Supplier;
 
----4.2 List cars with Automatic transmissions and cars from the year 2022
+---List cars with Automatic transmissions and cars from the year 2022
 ---Remove duplicates but does not display what I want
 SELECT * FROM Product
 WHERE Product_Transmission = 'Automatic' 
@@ -169,7 +160,6 @@ INTERSECT
 SELECT * FROM Product
 WHERE Product_Year = 2022;
 
----4.3
 ---Find car models that are supplied by American Autos and are Automatic 
 SELECT p.Product_Model AS Model FROM Product p 
 JOIN Supplier s ON p.Supplier_ID = s.Supplier_ID
@@ -188,7 +178,6 @@ SELECT p.Product_Model AS Model, p.Product_Transmission AS Transmission, s.Suppl
 JOIN Supplier s ON p.Supplier_ID = s.Supplier_ID
 WHERE s.Supplier_Name = 'American Autos';
 
----4.4
 ---Find car models that are supplied by American Autos and are  NOT Automatic 
 SELECT p.Product_Model AS Model FROM Product p 
 JOIN Supplier s ON p.Supplier_ID = s.Supplier_ID
